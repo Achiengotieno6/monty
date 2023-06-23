@@ -35,7 +35,7 @@ void push(stack_t **stack, unsigned int line_number)
  */
 void pall(stack_t **stack, unsigned int line_number __attribute__((unused)))
 {
-	stack_display(*my_stack);
+	stack_display(*stack);
 }
 
 /**
