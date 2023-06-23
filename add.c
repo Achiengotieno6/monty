@@ -6,16 +6,14 @@
  */
 void add(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp;
+	int total;
 
-	temp = *stack;
-
-	if (!valid_top_two(stack))
+	if (!stack || !*stack || !((*stack)->next))
 	{
-		printf("L%u: can't add, stack too short\n", line);
-		global.mode = 2;
-		return;
+		printf(stderr, "L%d: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
 	}
-	temp->next->n += temp->n;
-	pop(stack, line);
+	total = ((*stack)->next->n) + ((*stack)->n);
+	pop(stack, line_number);
+	(*stack)->n = total;
 }

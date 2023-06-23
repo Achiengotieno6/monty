@@ -1,10 +1,12 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+include <stdlib.h>
+
+#define N_OPCODES 17
 
 /**
  * struct global - pile of useful global variables
@@ -57,6 +59,22 @@ void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number)
-
+void swap(stack_t **stack, unsigned int line_number);
+void _nop(stack_t **stack, unsigned int line_number);
+int main(int argc, char **argv);
+void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs);
+void exit_clean(char *buf, FILE *fd);
+void free_stack(void);
+int valid_top_two(stack_t **stack);
+int valid_stack(stack_t **stack);
+char *find_arg1(char *buf);
+char *find_arg2(char *buf);
+int word_match(char *s1, char *s2);
+int parse_number(void);
+void error_exit(char *message);
+void open_error(char *file);
+void invalid_error(int line, char *opcode);
+void op_error(int line, char *message)
+stack_t *create_node(void);
+void add(stack_t **stack, unsigned int line_number);
 #endif

@@ -1,45 +1,31 @@
 #include "monty.h"
 /**
- * create_node - creates a new node
- * Return: pointer to node
- */
-stack_t *create_node(void)
-{
-	stack_t *node;
-
-	node = malloc(sizeof(stack_t));
-	if (node == NULL)
-		error_exit("Error: malloc failed");
-	node->n = parse_number();
-	node->prev = NULL;
-	node->next = NULL;
-	return (node);
-}
-/**
  * push - Push a new elemenet into the stack
  * @stack: pointer to top of the stack
  * @line_number: line number
  */
 void push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp;
+	char *f = globalData.arg;
 
-	if (*stack == NULL)
+	if ((is_digit(f)) == 0)
 	{
-		global.stack = create_node();
-		if (global.mode == 2)
-			printf("L%u: usage: push integer\n", line_number);
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	if (globalData.mode == 1) /*1 for stack ,0 for queue*/
+	{
+		if (!nodeadd(stack, atoi(globalData.arg)))
+		{
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
-		temp = *stack;
-		global.stack = create_node();
-		if (global.mode == 2)
+		if (!queue(stack, atoi(globalData.arg)))
 		{
-			printf("L%u: usage: push integer\n", line_number);
-			return;
+			exit(EXIT_FAILURE);
 		}
-		global.stack->next = temp;
 	}
 }
 /**
@@ -47,17 +33,25 @@ void push(stack_t **stack, unsigned int line_number)
  * @stack: the stack
  * @line_number: line number
  */
-void pall(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, unsigned int line_number __attribute__((unused)))
 {
-	stack_t temp;
+	stack_display(*my_stack);
+}
 
-	(void) line_number;
-	if (!valid_stack(stack)
-		return;
-	temp = *stack;
-	while (temp != NULL)
+/**
+ * stack_display - displays the values of the stack
+ * @stack: the stack to display its values
+ * Return: size of the stack
+ */
+size_t stack_display(const stack_t *stack)
+{
+	size_t stack_size = 0;
+
+	while (stack)
 	{
-		printf("%d\n", temp->n);
-		temp = temp->next;
+		printf("%d\n", stack->n);
+		stack = stack->next;
+		stack_size++;
 	}
+	return (stack_size);
 }

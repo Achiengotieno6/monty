@@ -6,18 +6,18 @@
  */
 void pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp;
+	stack_t *temp = NULL;
 
-	if (!valid_stack(stack))
+	if (!stack || !*stack)
 	{
-		global.mode = 2;
-		op_error(line_number, "can't pop an empty stack")
-		return;
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
+		exit(EXIT_FAILURE);
 	}
-	temp = *stack;
+	temp = (*stack)->next;
+	free(*stack);
+	*stack = temp;
 
-	if (temp->next != NULL)
-		temp->next->prev = NULL;
-	*stack = temp->next;
-	free(temp);
+	if (!*stack)
+		return;
+	(*stack)->prev = NULL;
 }
